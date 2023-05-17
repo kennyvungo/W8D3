@@ -138,8 +138,7 @@ function addNumbers(sum,numsLeft,completionCallback){
 let tooSoon = false;
 Function.prototype.myThrottle = function (interval) {
     
-    if (tooSoon) {
-    }else{
+    if (!tooSoon){
         tooSoon = true;
         setTimeout(()=> {tooSoon = false;}, interval);
         this();
@@ -164,7 +163,61 @@ Function.prototype.myThrottle = function (interval) {
 
 // neuron.fire = neuron.fire.myThrottle(500);
 
-// const printTest = () => {console.log("testing")};
-
 // setInterval(() => {printTest.myThrottle(500)}, 10);
+
+
+const printTest = () => {console.log("testing")};
+
+
+let called = false;
+// let stack = 0;
+let timeout;
+
+Function.prototype.myDebounce = function(interval){
+ 
+        // console.log("Resetting Interval!")
+    clearInterval(timeout);
+    timeout = setInterval(this,interval);
+}
+// printTest.myDebounce(1000);
+// setInterval(() => {printTest.myDebounce(1000)},500);
+// printTest.myDebounce(750);
+
+
+class SearchBar {
+  constructor() {
+    this.query = "";
+
+    this.type = this.type.bind(this);
+    this.search = this.search.bind(this);
+  }
+
+  type(letter) {
+    this.query += letter;
+    this.search.myDebounce(1000);
+  }
+
+  search() {
+    console.log(`searching for ${this.query}`);
+  }
+}
+
+const searchBar = new SearchBar();
+
+const queryForHelloWorld = () => {
+    searchBar.type("h");
+    searchBar.type("e");
+    searchBar.type("l");
+    searchBar.type("l");
+    searchBar.type("o");
+    searchBar.type(" ");
+    searchBar.type("w");
+    searchBar.type("o");
+    searchBar.type("r");
+    searchBar.type("l");
+    searchBar.type("d");
+};
+
+searchBar.search.myDebounce(3000);
+queryForHelloWorld();
 
